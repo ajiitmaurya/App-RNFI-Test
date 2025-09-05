@@ -31,16 +31,20 @@
                                 <th>#</th>
                                 <th>Title</th>
                                 <th>Content</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Example Row -->
-                            @foreach($articles as $list)
+                            @foreach($articles as $i => $list)
                             <tr>
-                                <td>{{ $list['id'] ?? '' }}</td>
+                                <td>{{ ++$i }}</td>
                                 <td>{{ $list['title'] ?? '' }}</td>
                                 <td>{{ $list['content'] ?? '' }}</td>
+                                <td>{{ \Carbon\Carbon::parse($list['created_at'])->format('Y-m-d H:i:s') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($list['updated_at'])->format('Y-m-d H:i:s') }}</td>
                                 <td>
                                     <button class="btn btn-sm btn-success" onclick="view(<?= $list['id']; ?>)">View</button>
                                     <button class="btn btn-sm btn-success" onclick="edit(<?= $list['id']; ?>)">Edit</button>
