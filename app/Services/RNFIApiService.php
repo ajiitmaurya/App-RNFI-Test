@@ -11,7 +11,7 @@ class RNFIApiService
 
     public function __construct()
     {
-        $this->apiBase = evn('API', 'http://127.0.0.1:8001/api');
+        $this->apiBase = env('API', 'http://127.0.0.1:8001/api');
         $data = session('data');
         $this->token = $data['token'] ?? null;
     }

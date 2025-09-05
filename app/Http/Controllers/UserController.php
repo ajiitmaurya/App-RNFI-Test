@@ -17,21 +17,29 @@ class UserController extends Controller
     }
     function login()
     {
+        $data = session('data');
+        if (!empty($data['token'])) {
+            return redirect('/articles');
+        }
         return view('login');
     }
 
     function register()
     {
+        $data = session('data');
+        if (!empty($data['token'])) {
+            return redirect('/articles');
+        }
         return view('register');
     }
 
     function submitRegister(Request $request)
     {
-        //     $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|string|email|unique:users',
-        //     'password' => 'required|string|min:6|confirmed',
-        // ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
         $response = $this->authService->register($request->all());
         $response = $response['original'] ?? null;
         if (!empty($response['token']) && !empty($response['user'])) {
@@ -46,13 +54,7 @@ class UserController extends Controller
 
     function submitLogin(Request $request)
     {
-        //     $request->validate([
-        //     'email' => 'required|string|email|unique:users',
-        //     'password' => 'required|string|min:6|confirmed',
-        // ]);
-
         $response = $this->authService->login($request->all());
-        \Log::info($response);
         $response = $response['original'] ?? null;
         if (!empty($response['token']) && !empty($response['user'])) {
             session(['data' => $response]);
